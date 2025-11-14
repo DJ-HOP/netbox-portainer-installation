@@ -2,10 +2,6 @@ services:
   ### NetBox ###
   netbox:
     #image: docker.io/netboxcommunity/netbox:${VERSION-v4.4-3.4.1}
-    build:
-      context: .
-      dockerfile: Dockerfile-Plugins
-    image: netbox:latest-plugins
     container_name: netbox
     depends_on:
       - postgres
@@ -35,7 +31,6 @@ services:
   ### NetBox worker ###
   netbox-worker:
     #image: docker.io/netboxcommunity/netbox:${VERSION-v4.4-3.4.1}
-    image: netbox:latest-plugins
     container_name: netbox-worker
     depends_on:
       - netbox
@@ -58,7 +53,7 @@ services:
   
   ### NetBox worker ###
   netbox-housekeeping: # To run periodic maintenance and cleanup jobs for NetBox
-    image: netbox:latest-plugins
+    #image: docker.io/netboxcommunity/netbox:${VERSION-v4.4-3.4.1}
     container_name: netbox-housekeeping
     depends_on:
       netbox:
