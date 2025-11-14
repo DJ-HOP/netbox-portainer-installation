@@ -2,8 +2,8 @@ services:
   netbox:
     build:
       context: .
-      dockerfile: Dockerfile
-    image: nnetbox:latest-plugins
+      dockerfile: Dockerfile-Plugins
+    image: netbox:latest-plugins
     pull_policy: never
     environment:
       SKIP_SUPERUSER: "false"
