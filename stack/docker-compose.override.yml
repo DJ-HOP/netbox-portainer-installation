@@ -16,7 +16,3 @@ services:
   netbox-worker:
     image: netbox:cyber-automation
     pull_policy: never
-
-  netbox-housekeeping:
-    image: netbox:cyber-automation
-    pull_policy: never
