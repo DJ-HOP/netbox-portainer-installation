@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: netbox-plugins
+    image: netbox:latest-plugins
     environment:
       SKIP_SUPERUSER: "false"
       SUPERUSER_NAME: admin
@@ -11,4 +11,4 @@ services:
       SUPERUSER_PASSWORD: MyPassword#123
 
   netbox-worker:
-    image: netbox-plugins
+    image: netbox:latest-plugins
