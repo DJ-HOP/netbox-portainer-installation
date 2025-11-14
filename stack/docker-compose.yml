@@ -34,7 +34,7 @@ services:
       - /opt/netbox/venv/bin/python
       - /opt/netbox/netbox/manage.py
       - rqworker
-    healthcheck: &netbox-worker
+    healthcheck:
       test: ps -aux | grep -v grep | grep -q rqworker || exit 1
       start_period: 25s
       timeout: 3s
@@ -45,26 +45,6 @@ services:
       - netbox-reports-files:/opt/netbox/netbox/reports:rw
       - netbox-scripts-files:/opt/netbox/netbox/scripts:rw
     restart: unless-stopped
-  
-  ### NetBox worker ###
-  netbox-housekeeping: # To run periodic maintenance and cleanup jobs for NetBox
-    #image: docker.io/netboxcommunity/netbox:${VERSION-v4.4-3.4.1}
-    container_name: netbox-housekeeping
-    depends_on:
-      netbox:
-        condition: service_healthy
-    user: "unit:root"
-    entrypoint:
-      - /opt/netbox/housekeeping.sh
-    env_file: env/netbox.env
-    healthcheck: *netbox-worker
-    volumes:
-      - ./configuration:/etc/netbox/config:ro
-      - netbox-media-files:/opt/netbox/netbox/media:rw
-      - netbox-reports-files:/opt/netbox/netbox/reports:rw
-      - netbox-scripts-files:/opt/netbox/netbox/scripts:rw
-    restart: unless-stopped
-
 
   ### PostgreSQL database ###
   postgres:
