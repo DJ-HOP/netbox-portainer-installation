@@ -1,7 +1,8 @@
 services:
   ### Netbox ###
   netbox:
-    image: docker.io/netboxcommunity/netbox:${VERSION-v4.4-3.4.1}
+    #image: docker.io/netboxcommunity/netbox:${VERSION-v4.4-3.4.1}
+    image: daily12/cyber-automation:latest
     container_name: netbox
     depends_on:
       - postgres
@@ -30,7 +31,8 @@ services:
 
   ### NetBox worker ###
   netbox-worker:
-    image: docker.io/netboxcommunity/netbox:${VERSION-v4.4-3.4.1}
+    #image: docker.io/netboxcommunity/netbox:${VERSION-v4.4-3.4.1}
+    image: daily12/cyber-automation:latest
     container_name: netbox-worker
     depends_on:
       - netbox
