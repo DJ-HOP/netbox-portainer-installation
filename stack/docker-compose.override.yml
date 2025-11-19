@@ -1,0 +1,18 @@
+services:
+  netbox:
+    build:
+      context: .
+      dockerfile: Dockerfile-Plugins
+      args:
+        NETBOX_IMAGE: "docker.io/netboxcommunity/netbox:${VERSION-v4.4-3.4.1}"
+    image: netbox:cyber-automation
+    pull_policy: never
+    environment:
+      SKIP_SUPERUSER: "false"
+      SUPERUSER_NAME: admin
+      SUPERUSER_EMAIL: admin@example.com
+      SUPERUSER_PASSWORD: MyPassword#123
+
+  netbox-worker:
+    image: netbox:cyber-automation
+    pull_policy: never

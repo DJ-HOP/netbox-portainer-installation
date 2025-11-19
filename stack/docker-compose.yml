@@ -2,7 +2,6 @@ services:
   ### Netbox ###
   netbox:
     image: docker.io/netboxcommunity/netbox:${VERSION-v4.4-3.4.1}
-    #image: daily12/cyber-automation:latest
     container_name: netbox
     depends_on:
       - postgres
@@ -21,7 +20,7 @@ services:
       timeout: 3s
       interval: 15s
     volumes:
-      - configuration:/etc/netbox/config:ro
+      - ./configuration:/etc/netbox/config:z,ro
       - netbox-media-files:/opt/netbox/netbox/media:rw
       - netbox-reports-files:/opt/netbox/netbox/reports:rw
       - netbox-scripts-files:/opt/netbox/netbox/scripts:rw
@@ -32,12 +31,10 @@ services:
   ### NetBox worker ###
   netbox-worker:
     image: docker.io/netboxcommunity/netbox:${VERSION-v4.4-3.4.1}
-    #image: daily12/cyber-automation:latest
     container_name: netbox-worker
     depends_on:
       - netbox
     user: "unit:root"
-    env_file: env/netbox.env
     command:
       - /opt/netbox/venv/bin/python
       - /opt/netbox/netbox/manage.py
@@ -48,7 +45,7 @@ services:
       timeout: 3s
       interval: 15s
     volumes:
-      - configuration:/etc/netbox/config:ro
+      - ./configuration:/etc/netbox/config:ro
       - netbox-media-files:/opt/netbox/netbox/media:rw
       - netbox-reports-files:/opt/netbox/netbox/reports:rw
       - netbox-scripts-files:/opt/netbox/netbox/scripts:rw
@@ -98,8 +95,6 @@ services:
 
 volumes:
   netbox-media-files:
-    driver: local
-  configuration:
     driver: local
   netbox-postgres-data:
     driver: local
