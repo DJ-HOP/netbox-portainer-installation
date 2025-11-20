@@ -1,19 +1,13 @@
 services:
   ### Netbox ###
   netbox:
-    #image: docker.io/netboxcommunity/netbox:${VERSION-v4.4-3.4.1}
-    image: daily12/cyber-automation:latest
-    #container_name: netbox
+    image: docker.io/netboxcommunity/netbox:${VERSION-v4.4-3.4.1}
+    container_name: netbox
     depends_on:
       - postgres
       - redis
       - redis-cache
     env_file: env/netbox.env
-    environment:
-      SKIP_SUPERUSER: "false"
-      SUPERUSER_NAME: admin
-      SUPERUSER_EMAIL: admin@example.com
-      SUPERUSER_PASSWORD: MyPassword#123
     user: "unit:root"
     healthcheck:
       test: curl -f http://localhost:8080/login/ || exit 1
@@ -26,14 +20,13 @@ services:
       - netbox-reports-files:/opt/netbox/netbox/reports:rw
       - netbox-scripts-files:/opt/netbox/netbox/scripts:rw
     ports:
-      - "9450:8080"
+      - "9455:8080"
     restart: unless-stopped
 
   ### NetBox worker ###
   netbox-worker:
-    #image: docker.io/netboxcommunity/netbox:${VERSION-v4.4-3.4.1}
-    image: daily12/cyber-automation:latest
-    #container_name: netbox-worker
+    image: docker.io/netboxcommunity/netbox:${VERSION-v4.4-3.4.1}
+    container_name: netbox-worker
     depends_on:
       - netbox
     user: "unit:root"
@@ -56,7 +49,7 @@ services:
   ### PostgreSQL database ###
   postgres:
     image: docker.io/postgres:17-alpine
-    #container_name: netbox-postgres-db
+    container_name: netbox-postgres-db
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -q -t 2 -d $$POSTGRES_DB -U $$POSTGRES_USER"]
       start_period: 20s
@@ -71,7 +64,7 @@ services:
   ### Redis ###
   redis:
     image: docker.io/valkey/valkey:8.1-alpine
-    #container_name: netbox-redis
+    container_name: netbox-redis
     command: ["sh", "-c", "valkey-server --appendonly yes --requirepass $$REDIS_PASSWORD"]
     healthcheck: &redis-healthcheck
       test: ["CMD-SHELL","[ $$(valkey-cli --pass \"$${REDIS_PASSWORD}\" ping) = 'PONG' ]"]
@@ -86,7 +79,7 @@ services:
   ### Redis cache ###
   redis-cache:
     image: docker.io/valkey/valkey:8.1-alpine
-    #container_name: netbox-redis-cache
+    container_name: netbox-redis-cache
     command: ["sh", "-c", "valkey-server --requirepass $$REDIS_PASSWORD"]
     healthcheck: *redis-healthcheck
     env_file: env/redis-cache.env
